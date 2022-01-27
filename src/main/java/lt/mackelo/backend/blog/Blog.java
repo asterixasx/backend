@@ -19,6 +19,7 @@ public class Blog {
 
     private Long id;
     private String title;
+    @Column(length = 5000)
     private String text;
 
     public Blog() {
