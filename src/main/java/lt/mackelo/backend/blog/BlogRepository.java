@@ -1,4 +1,4 @@
-package lt.mackelo.backend.users;
+package lt.mackelo.backend.blog;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UsersRepository extends JpaRepository<Users, Long> {
+public interface BlogRepository extends JpaRepository<Blog, Long> {
 
-    @Query("SELECT u FROM Users u WHERE u.email = ?1")
-    Optional<Users> findUsersByEmail(String email);
+    @Query("SELECT u FROM Blog u WHERE u.title = ?1")
+    Optional<Blog> findBlogByTitle(String title);
 }

@@ -1,36 +1,36 @@
-package lt.mackelo.backend.users;
+package lt.mackelo.backend.person;
 
 import javax.persistence.*;
 
 @Entity
 @Table
-public class Users {
+public class Person {
 
     @Id
     @SequenceGenerator(
-            name = "users_sequence",
-            sequenceName = "users_sequence",
+            name = "person_sequence",
+            sequenceName = "person_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "users_sequence"
+            generator = "person_sequence"
     )
 
     private Long id;
     private String email;
     private String password;
 
-    public Users() {
+    public Person() {
     }
 
-    public Users(Long id, String email, String password) {
+    public Person(Long id, String email, String password) {
         this.id = id;
         this.email = email;
         this.password = password;
     }
 
-    public Users(String email, String password) {
+    public Person(String email, String password) {
         this.email = email;
         this.password = password;
     }
@@ -61,7 +61,7 @@ public class Users {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "Person{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
