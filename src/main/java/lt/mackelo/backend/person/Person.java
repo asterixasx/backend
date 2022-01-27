@@ -34,13 +34,11 @@ public class Person {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.roles = roles;
     }
 
     public Person(String email, String password, String roles) {
         this.email = email;
         this.password = password;
-        this.roles = roles;
     }
 
     public Long getId() {

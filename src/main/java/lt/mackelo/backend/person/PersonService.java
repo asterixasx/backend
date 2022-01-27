@@ -1,6 +1,8 @@
 package lt.mackelo.backend.person;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,15 @@ public class PersonService {
     }
 
     public List<Person> getPerson() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Optional<Person> optionalPerson = personRepository.findPersonByEmail(currentPrincipalName);
+
+        if(optionalPerson.isEmpty() || optionalPerson.get().getRoles() == null ||
+                !optionalPerson.get().getRoles().equals("ADMIN")) {
+            throw new IllegalStateException("you can't access that information");
+        }
+
         return personRepository.findAll();
     }
 
@@ -33,6 +44,7 @@ public class PersonService {
 
         String encoded = passwordEncoder.encode(person.getPassword());
         person.setPassword(encoded);
+        person.setRoles("USER");
 
         personRepository.save(person);
     }
@@ -42,6 +54,16 @@ public class PersonService {
         if(!exists) {
             throw new IllegalStateException("person with id " + personId + " does not exists");
         }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Optional<Person> optionalPerson = personRepository.findPersonByEmail(currentPrincipalName);
+
+        if(optionalPerson.isEmpty() || optionalPerson.get().getRoles() == null ||
+                !optionalPerson.get().getRoles().equals("ADMIN")) {
+            throw new IllegalStateException("you do not have right permissions to do that");
+        }
+
         personRepository.deleteById(personId);
     }
 
@@ -50,6 +72,14 @@ public class PersonService {
         Person person = personRepository.findById(personId)
                 .orElseThrow(() -> new IllegalStateException(
                         "person with id " + " does not exists"));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Optional<Person> optionalPerson = personRepository.findPersonByEmail(currentPrincipalName);
+        if(optionalPerson.isEmpty() || optionalPerson.get().getRoles() == null ||
+                !optionalPerson.get().getRoles().equals("ADMIN")) {
+            throw new IllegalStateException("you do not have right permissions to do that");
+        }
 
         if(email != null && email.length() > 0 && !Objects.equals(person.getEmail(), email)) {
             Optional<Person> personOptional = personRepository.findPersonByEmail(email);

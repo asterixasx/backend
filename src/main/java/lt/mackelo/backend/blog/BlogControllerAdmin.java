@@ -6,19 +6,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/blog")
-public class BlogController {
+@RequestMapping(path = "api/v1/admin/blog")
+public class BlogControllerAdmin {
 
     private final BlogService blogService;
 
     @Autowired
-    public BlogController(BlogService blogService) {
+    public BlogControllerAdmin(BlogService blogService) {
         this.blogService = blogService;
     }
 
     @GetMapping
     public List<Blog> getBlog() {
-        return blogService.getUserBlogs();
+        return blogService.getAllBlog();
     }
 
     @PostMapping
@@ -31,11 +31,11 @@ public class BlogController {
             @PathVariable("blogId") Long blogId,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String text) {
-        blogService.updateUserBlog(blogId, title, text);
+        blogService.updateBlog(blogId, title, text);
     }
 
     @DeleteMapping(path = "{blogId}")
     public void deleteBlog(@PathVariable("blogId") Long blogId) {
-        blogService.deleteUserBlog(blogId);
+        blogService.deleteBlog(blogId);
     }
 }
