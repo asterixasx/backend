@@ -30,8 +30,13 @@ public class Person {
     public Person() {
     }
 
-    public Person(Long id, String email, String password, String roles) {
+    public Person(Long id, String email, String password) {
         this.id = id;
+        this.email = email;
+        this.password = password;
+    }
+
+    public Person(String email, String password) {
         this.email = email;
         this.password = password;
     }
@@ -39,6 +44,7 @@ public class Person {
     public Person(String email, String password, String roles) {
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 
     public Long getId() {
