@@ -28,4 +28,12 @@ public class UsersService {
         }
         usersRepository.save(users);
     }
+
+    public void deleteUsers(Long usersId) {
+        boolean exists = usersRepository.existsById(usersId);
+        if(!exists) {
+            throw new IllegalStateException("user with id " + usersId + " does not exists");
+        }
+        usersRepository.deleteById(usersId);
+    }
 }
