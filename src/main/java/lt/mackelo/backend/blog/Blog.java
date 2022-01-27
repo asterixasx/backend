@@ -1,5 +1,10 @@
 package lt.mackelo.backend.blog;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lt.mackelo.backend.person.Person;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 
 @Entity
@@ -21,6 +26,10 @@ public class Blog {
     private String title;
     @Column(length = 5000)
     private String text;
+
+    @ManyToOne
+    @JoinColumn(name="person_id", nullable = false)
+    private Person person;
 
     public Blog() {
     }
@@ -60,12 +69,11 @@ public class Blog {
         this.text = text;
     }
 
-    @Override
-    public String toString() {
-        return "Blog{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", text='" + text + '\'' +
-                '}';
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }
