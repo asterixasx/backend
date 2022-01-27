@@ -1,6 +1,7 @@
 package lt.mackelo.backend.person;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,10 +13,12 @@ import java.util.Optional;
 public class PersonService {
 
     private final PersonRepository personRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public PersonService(PersonRepository personRepository) {
+    public PersonService(PersonRepository personRepository, PasswordEncoder passwordEncoder) {
         this.personRepository = personRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Person> getPerson() {
@@ -27,6 +30,10 @@ public class PersonService {
         if(personOptional.isPresent()) {
             throw new IllegalStateException("email taken");
         }
+
+        String encoded = passwordEncoder.encode(person.getPassword());
+        person.setPassword(encoded);
+
         personRepository.save(person);
     }
 
@@ -39,7 +46,7 @@ public class PersonService {
     }
 
     @Transactional
-    public void updatePerson(Long personId, String email, String password) {
+    public void updatePerson(Long personId, String email, String password, String roles) {
         Person person = personRepository.findById(personId)
                 .orElseThrow(() -> new IllegalStateException(
                         "person with id " + " does not exists"));
@@ -53,8 +60,11 @@ public class PersonService {
         }
 
         if(password != null && password.length() > 0 && !Objects.equals(person.getPassword(),password)) {
-            person.setPassword(password);
+            person.setPassword(passwordEncoder.encode(password));
         }
 
+        if(roles != null && roles.length() > 0 && !Objects.equals(person.getRoles(),roles)) {
+            person.setRoles(roles);
+        }
     }
 }

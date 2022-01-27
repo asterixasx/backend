@@ -18,21 +18,29 @@ public class Person {
     )
 
     private Long id;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    private String roles;
 
     public Person() {
     }
 
-    public Person(Long id, String email, String password) {
+    public Person(Long id, String email, String password, String roles) {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 
-    public Person(String email, String password) {
+    public Person(String email, String password, String roles) {
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -59,12 +67,11 @@ public class Person {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 }

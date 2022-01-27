@@ -30,8 +30,9 @@ public class PersonController {
     public void updatePerson(
             @PathVariable("personId") Long personId,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String password) {
-        personService.updatePerson(personId, email, password);
+            @RequestParam(required = false) String password,
+            @RequestParam(required = false) String roles) {
+        personService.updatePerson(personId, email, password, roles);
     }
 
     @DeleteMapping(path = "{personId}")
