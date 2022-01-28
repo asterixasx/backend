@@ -1,5 +1,5 @@
 # backend
-JAVA Task for Ignitis Group
+JAVA Task
 
 Task description:
 
